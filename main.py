@@ -1,5 +1,6 @@
 from transformers import BertTokenizer, BertForSequenceClassification, pipeline
 from googletrans import Translator
+import jieba
 
 translator = Translator()
 
@@ -11,5 +12,9 @@ sentence = """//這61間食品公司合共市值達5442億元（以9月26日股�
 =====Shared Post=====
  港上市公司社會責任表現 平均分僅10.6分 - 香港經濟日報 - iMoney - 政經 - 講金講心 香港作為國際金融中心，屢遭批評推行「環境、社會及管治（ESG）」步伐太慢，港交所去年起加強上市公司「ESG」披露資料責任"""
 
+seg_list = jieba.cut(sentence, cut_all=False)
+print("Default Mode: " + " ".join(seg_list))  # 精确模式
+
+
+print(esg(translator.translate(seg_list).text))
 print(esg(translator.translate(sentence).text))
-print(esg("I am hungry"))
