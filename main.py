@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from transformers import BertTokenizer, BertForSequenceClassification, pipeline, MarianMTModel, MarianTokenizer
 from transformers.pipelines.pt_utils import KeyDataset
-from pandas import read_excel
+from pandas import read_excel, read_pickle
 from json import dumps
 from typing import Literal
 from datetime import datetime
@@ -99,6 +99,7 @@ def cache():
 for i in range(2):
     print(f"==== read data set {i + 1} ====")
     df = read_excel(rf"./datas/AC2022_set{i + 1}.xlsx", "Sheet1")
+    # df = read_pickle(rf"./datas/AC2022_set{i + 1}.pk1")
     print(f"==== read data set {i + 1} finish ====")
     ds = Dataset.from_dict({"c": df["headline"].astype(str).tolist()})
     df["trans_headline"] = [out[0].get("translation_text")
@@ -112,22 +113,19 @@ for i in range(2):
                                                                 truncation=True, max_length=512))]
     df.to_pickle(rf"./datas/AC2022_set{i + 1}.pk1")
 
-    df.replace(r"\|", r"\\", regex=True, inplace=True)
-    df.to_pickle(rf"./datas/AC2022_set{i + 1}.pk1")
-
     ds = Dataset.from_dict({"c": df["trans_headline"].astype(str).tolist()})
-    df["headline_ESG"] = [out[0].get("label")
+    df["headline_ESG"] = [out.get("label")
                           for out in tqdm(_esg(KeyDataset(ds, "c"), truncation=True, max_length=512))]
     df.to_pickle(rf"./datas/AC2022_set{i + 1}.pk1")
-    df["headline_ESG_9class"] = [out[0].get("label")
+    df["headline_ESG_9class"] = [out.get("label")
                                  for out in tqdm(_esg_9class(KeyDataset(ds, "c"), truncation=True, max_length=512))]
     df.to_pickle(rf"./datas/AC2022_set{i + 1}.pk1")
 
     ds = Dataset.from_dict({"c": df["trans_content"].astype(str).tolist()})
-    df["content_ESG"] = [out[0].get("label")
+    df["content_ESG"] = [out.get("label")
                          for out in tqdm(_esg(KeyDataset(ds, "c"), truncation=True, max_length=512))]
     df.to_pickle(rf"./datas/AC2022_set{i + 1}.pk1")
-    df["content_ESG_9class"] = [out[0].get("label")
+    df["content_ESG_9class"] = [out.get("label")
                                 for out in tqdm(_esg_9class(KeyDataset(ds, "c"), truncation=True, max_length=512))]
     df.to_pickle(rf"./datas/AC2022_set{i + 1}.pk1")
     print(f"==== process data set {i + 1} finish ====")
