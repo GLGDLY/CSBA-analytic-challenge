@@ -145,10 +145,10 @@ for i in range(2):
             pass
     df.to_pickle(rf"./datas/AC2022_set{i + 1}.pk1")
 
-headline_data.monthly_ESG = dict(sorted(headline_data.monthly_ESG.items(), key=lambda x: x[0]))
-headline_data.monthly_9class = dict(sorted(headline_data.monthly_9class.items(), key=lambda x: x[0]))
-content_data.monthly_ESG = dict(sorted(content_data.monthly_ESG.items(), key=lambda x: x[0]))
-content_data.monthly_9class = dict(sorted(content_data.monthly_9class.items(), key=lambda x: x[0]))
+headline_data.monthly_ESG = dict(sorted(headline_data.monthly_ESG.items()))
+headline_data.monthly_9class = dict(sorted(headline_data.monthly_9class.items()))
+content_data.monthly_ESG = dict(sorted(content_data.monthly_ESG.items()))
+content_data.monthly_9class = dict(sorted(content_data.monthly_9class.items()))
 cache()
 print("==== datasets process finish ====")
 
