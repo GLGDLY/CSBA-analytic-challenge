@@ -1,0 +1,10 @@
+transformers~=4.25.1
+openpyxl~=3.0.10
+pandas~=1.4.3
+sentencepiece~=0.1.97
+sacremoses~=0.0.53
+tqdm~=4.64.0
+datasets~=2.8.0
+
+--extra-index-url https://download.pytorch.org/whl/cu117
+torch~=1.13.1
