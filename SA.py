@@ -3,7 +3,9 @@
 # 1. find the highest mentioned topics in each month(among all ESG classes) 
 # 2 ,and find out the corresponding sentiment 
 from transformers import BertTokenizer, BertForSequenceClassification
+from transformers.pipelines.pt_utils import KeyDataset
 from transformers import pipeline
+from tqdm import tqdm
 import pandas as pd
 from json import loads
 
@@ -29,13 +31,22 @@ stat_df['max'] = stat_df.idxmax(axis="columns")
 
     # 1.2 locate and extract all obs (highest mentioned) in df (from pickle file), store it in temp obj maybe
 df = df.sort_values(by='non_view_engagements', ascending = False)
-print(df[['non_view_engagements','content', 'author_name']].head(50))
+#print(df[['non_view_engagements','content', 'author_name']].head(50))
 
     # 1.3 run sentiment analysis on the extracted data, store it in temp obj maybe (overall)
-    
-#finbert = BertForSequenceClassification.from_pretrained('yiyanghkust/finbert-tone',num_labels=3)
-#tokenizer = BertTokenizer.from_pretrained('yiyanghkust/finbert-tone')
-#nlp = pipeline("sentiment-analysis", model=finbert, tokenizer=tokenizer)
+ 
+finbert = BertForSequenceClassification.from_pretrained('yiyanghkust/finbert-tone',num_labels=3)
+tokenizer = BertTokenizer.from_pretrained('yiyanghkust/finbert-tone')
+nlp = pipeline("sentiment-analysis", model=finbert, tokenizer=tokenizer)
+#print(df.columns)
+
+df["headline_sentiment"] = nlp(df['trans_headline'].astype(str).tolist(), truncation=True, max_length=512)
+#temp = []
+#for i in range(len(df['trans_headline'])):
+#    temp.append(nlp(df['trans_headline'][i])[0]['label'])
+#df['sentiment'] = pd.DataFrame(temp)
+
+print(df.head())
 
 
 
