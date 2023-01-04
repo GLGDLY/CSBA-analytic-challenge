@@ -1,5 +1,5 @@
 # sentiment analysis
-# objectves: 
+# objectives:
 # 1. find the highest mentioned topics in each month(among all ESG classes) 
 # 2 ,and find out the corresponding sentiment 
 from transformers import BertTokenizer, BertForSequenceClassification
@@ -8,10 +8,11 @@ from transformers import pipeline
 from tqdm import tqdm
 import pandas as pd
 from json import loads
+from datasets import Dataset
 
 df = pd.read_pickle("./datas/AC2022_set1.pk1")
 
-#inspect the data 
+#inspect the data
 #print(df['pubdate'][:10])
 #columns = list(df.columns)
 
@@ -30,17 +31,18 @@ stat_df['max'] = stat_df.idxmax(axis="columns")
 #print(len(stat_df[stat_df['max']!='Community Relations']))
 
     # 1.2 locate and extract all obs (highest mentioned) in df (from pickle file), store it in temp obj maybe
-df = df.sort_values(by='non_view_engagements', ascending = False)
+df = df.sort_values(by='non_view_engagements', ascending=False)
 #print(df[['non_view_engagements','content', 'author_name']].head(50))
 
     # 1.3 run sentiment analysis on the extracted data, store it in temp obj maybe (overall)
- 
-finbert = BertForSequenceClassification.from_pretrained('yiyanghkust/finbert-tone',num_labels=3)
+
+finbert = BertForSequenceClassification.from_pretrained('yiyanghkust/finbert-tone', num_labels=3)
 tokenizer = BertTokenizer.from_pretrained('yiyanghkust/finbert-tone')
 nlp = pipeline("sentiment-analysis", model=finbert, tokenizer=tokenizer)
 #print(df.columns)
 
-df["headline_sentiment"] = nlp(df['trans_headline'].astype(str).tolist(), truncation=True, max_length=512)
+ds = Dataset.from_dict({"c": df['trans_headline'].astype(str).tolist()})
+df["headline_sentiment"] = [out.get("label") for out in tqdm(nlp(KeyDataset(ds, "c"), truncation=True, max_length=512))]
 #temp = []
 #for i in range(len(df['trans_headline'])):
 #    temp.append(nlp(df['trans_headline'][i])[0]['label'])
@@ -50,11 +52,11 @@ print(df.head())
 
 
 
-# step2 link w/ HSI 
-    # 2.1 find monthly HSI 
+# step2 link w/ HSI
+    # 2.1 find monthly HSI
     # 2.2 for each month
         # 2.2.1 get the rate of change in HSI
-        # 2.2.2 match the correponding hottest topic and sentiment 
+        # 2.2.2 match the correponding hottest topic and sentiment
         # 2.2.3 plot graph (HSI verse sentiment)
     # 2.3 find the most freq combination (+/-)
-    
+
