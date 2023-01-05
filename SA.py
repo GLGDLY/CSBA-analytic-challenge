@@ -43,13 +43,6 @@ nlp = pipeline("sentiment-analysis", model=finbert, tokenizer=tokenizer)
 
 ds = Dataset.from_dict({"c": df['trans_headline'].astype(str).tolist()})
 df["headline_sentiment"] = [out.get("label") for out in tqdm(nlp(KeyDataset(ds, "c"), truncation=True, max_length=512))]
-#temp = []
-#for i in range(len(df['trans_headline'])):
-#    temp.append(nlp(df['trans_headline'][i])[0]['label'])
-#df['sentiment'] = pd.DataFrame(temp)
-
-print(df.head())
-
 
 
 # step2 link w/ HSI
