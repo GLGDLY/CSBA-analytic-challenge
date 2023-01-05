@@ -29,19 +29,19 @@ class translator:
     _model_name = 'Helsinki-NLP/opus-mt-zh-en'
     _model = MarianMTModel.from_pretrained(_model_name).to(device)
     _tokenizer = MarianTokenizer.from_pretrained(_model_name)
-    translate = pipeline("translation_zh_to_en", model=_model, tokenizer=_tokenizer, device=0, batch_size=16)
+    translate = pipeline("translation_zh_to_en", model=_model, tokenizer=_tokenizer, device=device_index, batch_size=16)
 
 
 finbert = BertForSequenceClassification.from_pretrained("yiyanghkust/finbert-esg",
                                                         num_labels=4).to(device)
 tokenizer = BertTokenizer.from_pretrained("yiyanghkust/finbert-esg")
-_esg = pipeline("text-classification", model=finbert, tokenizer=tokenizer, device=0, batch_size=16)
+_esg = pipeline("text-classification", model=finbert, tokenizer=tokenizer, device=device_index, batch_size=16)
 print("==== load finish ====")
 
 finbert1 = BertForSequenceClassification.from_pretrained('yiyanghkust/finbert-esg-9-categories',
                                                          num_labels=9).to(device)
 tokenizer1 = BertTokenizer.from_pretrained('yiyanghkust/finbert-esg-9-categories')
-_esg_9class = pipeline("text-classification", model=finbert1, tokenizer=tokenizer1, device=0, batch_size=16)
+_esg_9class = pipeline("text-classification", model=finbert1, tokenizer=tokenizer1, device=device_index, batch_size=16)
 
 ESG_template = {"Environmental": 0, "Social": 0, "Governance": 0, "None": 0}
 ESG_9class_template = {"Climate Change": 0, "Pollution & Waste": 0, "Corporate Governance": 0,
@@ -58,7 +58,7 @@ class Datas:
 
 
 count = 0
-processed_docid = {}
+processed_docid = []
 headline_data = Datas()
 content_data = Datas()
 
@@ -96,7 +96,7 @@ def cache():
                          f"total processed: {count}")
 
 
-for i in range(2):
+for i in range(1, 2):
     print(f"==== read data set {i + 1} ====")
     df = read_excel(rf"./datas/AC2022_set{i + 1}.xlsx", "Sheet1")
     # df = read_pickle(rf"./datas/AC2022_set{i + 1}.pk1")
@@ -135,6 +135,7 @@ for i in range(2):
         # filter repeated data
         if row["docid"] in processed_docid:
             continue
+        processed_docid.append(row["docid"])
 
         # process data
         try:

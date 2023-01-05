@@ -8,3 +8,5 @@ datasets~=2.8.0
 
 --extra-index-url https://download.pytorch.org/whl/cu117
 torch~=1.13.1
+statsmodels~=0.13.5
+scikit-learn~=1.2.0
