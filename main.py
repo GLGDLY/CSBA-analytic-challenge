@@ -51,10 +51,10 @@ ESG_9class_template = {"Climate Change": 0, "Pollution & Waste": 0, "Corporate G
 
 class Datas:
     def __init__(self):
-        self.ESG = deepcopy(ESG_template)
-        self.ESG_9class = deepcopy(ESG_9class_template)
-        self.monthly_ESG = {}
-        self.monthly_9class = {}
+        self.ESG = deepcopy(ESG_template)              #總計統計數據
+        self.ESG_9class = deepcopy(ESG_9class_template)#總計統計數據
+        self.monthly_ESG = {}                          #每月統計數據
+        self.monthly_9class = {}                       #每月統計數據
 
 
 count = 0
@@ -72,7 +72,7 @@ def esg_stats(_type: Literal["headline", "content"], _row):
     dataset.ESG_9class[esg_class] += 1
 
     _time: datetime = _row["pubdate"].to_pydatetime()
-    _month = "%d-%02d" % (_time.year, _time.month)
+    _month = "%d-%02d" % (_time.year, _time.month) #前者為format string (%02d : format the integer with 2 digits, left padding it with zeroes)
     if _month not in dataset.monthly_ESG:
         dataset.monthly_ESG[_month] = deepcopy(ESG_template)
     dataset.monthly_ESG[_month][esg] += 1

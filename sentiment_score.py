@@ -6,6 +6,7 @@ from tqdm import tqdm
 
 #python3.10 -u sentiment_score.py
 
+#total Weighted average for each month
 with open("./datas/dataset1_sentiment_summary.txt", "r", encoding="utf-8") as f:
     datas = f.read().split("\n")
     sentiment = loads(datas[4])
@@ -16,13 +17,25 @@ total_count = sentiment_df['Positive'] + sentiment_df['Negative'] + sentiment_df
 weighted_sum = sentiment_df['Positive']*score_dic['Positive'] + sentiment_df['Negative']*score_dic['Negative'] + sentiment_df['Neutral']*score_dic['Neutral']
 score_df = pd.DataFrame(weighted_sum/total_count, columns=['score'])
 
+#Weighted average for every classes for each month
+df = pd.read_pickle('./datas/AC2022_set1.pk1')
+print(df.columns)
+#create a dataframe for each 9class_esg
 
-print(score_df)
+#using pandas.groupby calculate 
 
+
+
+
+
+
+
+
+
+"""
 # pickle file
 # http://43.136.55.86/AC2022_set1.pk1, http://43.136.55.86/AC2022_set2.pk1
 df = pd.read_pickle('./datas/AC2022_set1.pk1')
-
 #data wash 
 #cutting ESG_9class to those whom influence HSI
 cut_df = df[df["headline_ESG_9class"].isin(["Climate Change", "Pollution & Waste", "Product Liability", "Community Relations"])]
@@ -43,9 +56,4 @@ cut_df.drop(filter_indexs, inplace=True)
 
 print(cut_df)
 cut_df.to_pickle(r"./datas/AC2022_set1_after_filer.pk1")
-
-
-#print(df.columns)
-#find non_view_engagements higher than 50
-#filtered_df = df[df['non_view_engagements']>=1000].sort_values(by='non_view_engagements', ascending=False)['content'])
-#['climate chagne', '']
+"""
