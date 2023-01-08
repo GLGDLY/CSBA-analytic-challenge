@@ -17,19 +17,25 @@ total_count = sentiment_df['Positive'] + sentiment_df['Negative'] + sentiment_df
 weighted_sum = sentiment_df['Positive']*score_dic['Positive'] + sentiment_df['Negative']*score_dic['Negative'] + sentiment_df['Neutral']*score_dic['Neutral']
 score_df = pd.DataFrame(weighted_sum/total_count, columns=['score'])
 
+score_df.to_csv('./datas/dataset1_agg_ss.csv')
 #Weighted average for every classes for each month
-df = pd.read_pickle('./datas/AC2022_set1.pk1')
-print(df.columns)
-#create a dataframe for each 9class_esg
-
-#using pandas.groupby calculate 
-
-
-
-
-
-
-
+df = pd.read_pickle('./datas/AC2022_set1_SA_revised.pk1')
+df = df.sort_values(by='pubdate')
+conditions = [(df['headline_sentiment'] == 'Negative'), (df['headline_sentiment'] == 'Neutral'), (df['headline_sentiment'] == 'Positive')]
+values = [0, 5, 10]
+df['sentiment_score'] = np.select(conditions, values)
+df = df.set_index('pubdate')
+df = df[['headline_ESG_9class', 'sentiment_score']]
+#create dataframes for each 9class_esg
+grouped = list(df.groupby(['headline_ESG_9class']))
+#print(grouped[0][1])
+result = {}
+for i in range(len(grouped)):
+    current = grouped[i][1]
+    result[grouped[i][0]] = current.groupby(pd.Grouper(freq='M'))['sentiment_score'].mean()
+#now we have created a dictionary with key as 9class_esg and values as series of weighted average for each month
+result_df = pd.DataFrame.from_dict(result)
+result_df.to_csv('./datas/dataset1_per_class_ss.csv')
 
 
 """
