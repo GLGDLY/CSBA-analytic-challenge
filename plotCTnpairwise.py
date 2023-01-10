@@ -26,7 +26,7 @@ fig.show()
 
 #append open price to stat_df
 HSI_df = HSI_df.set_index(stat_df.index)
-stat_df['Open price'] = HSI_df.iloc[:,1].tolist()
+stat_df['Open Price'] = HSI_df.iloc[:,1].tolist()
 
 #create correlation table
 print(stat_df.corr())
@@ -34,13 +34,18 @@ stat_df.corr().to_csv('./datas/dataset1_correlation_table.csv')
 
 
 #Creating a pairwise plot in Seaborn, colored by year
+"""
 stat_df['Date'] = HSI_df.iloc[:,0].tolist()
 stat_df['Date'] = pd.to_datetime(stat_df['Date'])
 stat_df['Year'] = stat_df['Date'].dt.year
 temp = sns.pairplot(stat_df, hue='Year')
-temp.savefig("./datas/pairwise2.png")
+"""
+temp = sns.pairplot(stat_df, diag_kind="kde")
+temp.map_lower(sns.regplot, robust=True)
+temp.savefig("./datas/pairwise3.png")
 
 #Creating a pairwise plot in Pairgrid
+
 # Function to calculate correlation coefficient between two arrays
 def corr(x, y, **kwargs):
     # Calculate the value
@@ -52,7 +57,9 @@ def corr(x, y, **kwargs):
     ax.annotate(label, xy = (0.2, 0.95), size = 20, xycoords = ax.transAxes)
     
 # Create a pair grid instance
-grid = sns.PairGrid(data= stat_df)
+grid = sns.PairGrid(data= stat_df, vars=['Climate Change', 'Pollution & Waste', 'Corporate Governance',
+       'Natural Capital', 'Product Liability', 'Human Capital',
+       'Business Ethics & Values', 'Community Relations', 'Open Price'])
 
 # Map the plots to the locations
 grid = grid.map_upper(plt.scatter)

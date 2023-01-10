@@ -14,13 +14,13 @@ stat_df['max'] = stat_df.idxmax(axis="columns")
 HSI_df = pd.read_csv("./datas/HSI_monthly.csv")
 #append open price to stat_df
 HSI_df = HSI_df.set_index(stat_df.index)
-stat_df['Open price'] = HSI_df.iloc[:,1].tolist()
+stat_df['Open Price'] = HSI_df.iloc[:,1].tolist()
 
 #1st regression analysis
 x = stat_df[['Climate Change', 'Pollution & Waste', 'Corporate Governance',
        'Natural Capital', 'Product Liability', 'Human Capital',
        'Business Ethics & Values', 'Community Relations']]
-y = stat_df['Open price']
+y = stat_df['Open Price']
 
 # with sklearn
 regr = linear_model.LinearRegression()
@@ -65,7 +65,7 @@ print(print_model)
 print("\n3rd iteration")
 x = stat_df[['Climate Change', 'Pollution & Waste', 'Corporate Governance',
         'Product Liability', 'Human Capital','Community Relations']]
-y = stat_df['Open price']
+y = stat_df['Open Price']
 
 # with sklearn
 regr = linear_model.LinearRegression()
@@ -87,7 +87,7 @@ print(print_model)
 print("\n4th iteration\n")
 x = stat_df[['Climate Change', 'Pollution & Waste', 
         'Product Liability', 'Human Capital','Community Relations']]
-y = stat_df['Open price']
+y = stat_df['Open Price']
 
 # with sklearn
 regr = linear_model.LinearRegression()
@@ -109,7 +109,7 @@ print(print_model)
 print("\n5th iteration\n")
 x = stat_df[['Climate Change', 'Pollution & Waste', 
         'Product Liability', 'Community Relations']]
-y = stat_df['Open price']
+y = stat_df['Open Price']
 
 # with sklearn
 regr = linear_model.LinearRegression()

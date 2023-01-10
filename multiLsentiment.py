@@ -10,7 +10,7 @@ stat_df = pd.read_csv('./datas/dataset1_per_class_ss.csv')
 HSI_df = pd.read_csv("./datas/HSI_monthly.csv")
 #append open price to stat_df
 HSI_df = HSI_df.set_index(stat_df.index)
-stat_df['Open price'] = HSI_df.iloc[:,1].tolist()
+stat_df['Open Price'] = HSI_df.iloc[:,1].tolist()
 print(stat_df)
 
 
