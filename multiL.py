@@ -1,13 +1,9 @@
-#produce correlation tables and pairwise table
 #run multi-linear model 
-
-from json import loads
-import pandas as pd
+#python3.10 -u multiL.py
 from sklearn import linear_model
 import statsmodels.api as sm
-import plotly.graph_objects as go
-
-#python3.10 -u multiL.py
+from json import loads
+import pandas as pd
 
 with open("./datas/dataset1_stats.txt", "r", encoding="utf-8") as f:
     datas = f.read().split("\n")
@@ -15,33 +11,10 @@ with open("./datas/dataset1_stats.txt", "r", encoding="utf-8") as f:
 stat_df = pd.DataFrame(headline_monthly_9ESG).T
 stat_df['max'] = stat_df.idxmax(axis="columns")
 
-HSI_df = pd.read_csv("./datas/HSI_1.csv")
-
-#print(stat_df.columns)
-"""
-fig = go.Figure(data=[go.Candlestick(x=HSI_df['Date'],
-                open=HSI_df['Open'],
-                high=HSI_df['High'],
-                low=HSI_df['Low'],
-                close=HSI_df['Close'])])
-fig.show()
-""" 
-#print(len(HSI_df))
-
+HSI_df = pd.read_csv("./datas/HSI_monthly.csv")
+#append open price to stat_df
 HSI_df = HSI_df.set_index(stat_df.index)
 stat_df['Open price'] = HSI_df.iloc[:,1].tolist()
-
-
-#create correlation table
-print(stat_df.corr())
-stat_df.corr().to_csv('./datas/dataset1_correlation_table.csv')
-#plotting a pairwise plot of the data 
-#Creating a pairwise plot in Seaborn
-import seaborn as sns
-import matplotlib.pyplot as plt
-sns.pairplot(stat_df)
-plt.show()
-
 
 #1st regression analysis
 x = stat_df[['Climate Change', 'Pollution & Waste', 'Corporate Governance',
