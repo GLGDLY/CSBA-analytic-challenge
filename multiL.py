@@ -31,16 +31,17 @@ fig.show()
 HSI_df = HSI_df.set_index(stat_df.index)
 stat_df['Open price'] = HSI_df.iloc[:,1].tolist()
 
-"""
+
 #create correlation table
 print(stat_df.corr())
+stat_df.corr().to_csv('./datas/dataset1_correlation_table.csv')
 #plotting a pairwise plot of the data 
 #Creating a pairwise plot in Seaborn
 import seaborn as sns
 import matplotlib.pyplot as plt
 sns.pairplot(stat_df)
 plt.show()
-"""
+
 
 #1st regression analysis
 x = stat_df[['Climate Change', 'Pollution & Waste', 'Corporate Governance',

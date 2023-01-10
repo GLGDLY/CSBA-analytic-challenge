@@ -38,9 +38,6 @@ result_df = pd.DataFrame.from_dict(result)
 result_df.to_csv('./datas/dataset1_per_class_ss.csv')
 
 
-
-
-
 """
 # pickle file
 # http://43.136.55.86/AC2022_set1.pk1, http://43.136.55.86/AC2022_set2.pk1
