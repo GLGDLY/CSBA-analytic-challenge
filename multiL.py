@@ -43,7 +43,7 @@ print("\n2nd iteration")
 x = stat_df[['Climate Change', 'Pollution & Waste', 'Corporate Governance',
        'Natural Capital', 'Product Liability', 'Human Capital',
          'Community Relations']]
-y = stat_df['Open price']
+y = stat_df['Open Price']
 
 # with sklearn
 regr = linear_model.LinearRegression()

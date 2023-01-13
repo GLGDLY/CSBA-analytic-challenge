@@ -15,6 +15,9 @@ df['date'] = df['date'].apply(lambda x: x.strftime('%Y-%m')) #only year and mont
 
 #new changes: choose statistically signficant variable only 
 new_df = df.drop(['Corporate Governance', 'Natural Capital', 'Human Capital','Business Ethics & Values', 'Non-ESG'], axis=1)
+#get the average of the remaining 4 data colume 
+print(new_df[['Climate Change', 'Community Relations', 'Pollution & Waste',
+       'Product Liability']].mean())
 
 #turn the classes into one columns
 df = df.melt('date')
